@@ -5,7 +5,7 @@ const client = new Client({
 		headless: true
 	},
 	authStrategy: new LocalAuth({
-		clientId: '',
+		clientId: 'EXAMPLE_CLIENT_ID',
 	}),
 });
 
@@ -14,6 +14,21 @@ client.on('ready', () => {
 	// ...
 });
 
+/**
+ * Sends a message via the whatsapp web client to the recipient.
+ *
+ * @param {string} recipient the chat id to send the message to 
+ * @param {string} message the message to send
+ *
+ * @returns Promise<string>
+ */
+export function sendMessage(recipient, message) {
+	client.sendMessage(recipient, message)
+		.then(_ => { return ""; })
+		.catch((err) => { return err });
+}
+
+// Incoming message
 client.on('message_create', async msg => {
 	console.log("Received message:", msg.body);
 	if (msg.body === '!fuck') {
