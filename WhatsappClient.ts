@@ -1,6 +1,6 @@
-const { Client, LocalAuth } = require('whatsapp-web.js');
+import { Client, LocalAuth } from 'whatsapp-web.js';
 
-const client = new Client({
+const client: Client = new Client({
 	puppeteer: {
 		headless: true
 	},
@@ -22,10 +22,17 @@ client.on('ready', () => {
  *
  * @returns Promise<string>
  */
-export function sendMessage(recipient, message) {
-	client.sendMessage(recipient, message)
-		.then(_ => { return ""; })
-		.catch((err) => { return err });
+export function sendMessage(recipient: string, message: string): Promise<boolean> {
+	let success: boolean = false;
+	client.sendMessage(recipient, message).then(() => {
+		success = true
+	})
+
+	if (success) {
+		return Promise.resolve(success);
+	} else {
+		return Promise.reject(success)
+	}
 }
 
 // Incoming message
@@ -44,4 +51,9 @@ client.on('qr', qr => {
 	console.log(qr);
 });
 
-client.initialize();
+/**
+ * Initializes the app
+ */
+export function init() {
+	client.initialize();
+}

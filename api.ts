@@ -1,5 +1,5 @@
-const express = require("express");
-import { sendMessage } from "./WhatsappClient";
+import express from "express";
+import { init, sendMessage } from "./WhatsappClient";
 
 const app = express();
 const port = 3001;
@@ -15,7 +15,9 @@ app.listen(port, () => {
 app.post('/send-text', (req, res) => {
 	const { message, recipient } = req.body;
 
+	init();
+
 	sendMessage(recipient, message)
-	//.then(() => { res.status(200).send(); })
-	//.catch((err) => { res.status(500).send({ message: 'Error sending message: ' + err }) })
+		.then(() => { res.status(200).send(); })
+		.catch(() => { res.status(500).send({ message: 'Error sending message' }) })
 });
